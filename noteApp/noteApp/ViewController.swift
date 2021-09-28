@@ -25,6 +25,8 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         // adding notes title at the top
         self.title = "Notes"
         self.navigationController?.navigationBar.prefersLargeTitles = true
+        self.navigationItem.largeTitleDisplayMode = .always
+        
         
         // button to add a note
         let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addNote))
@@ -43,7 +45,19 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        <#code#>
+        super.viewWillAppear(animated)
+        
+        if selectedRow == -1 {
+            return
+        }
+        
+        data[selectedRow] = newRowText
+        if newRowText == "" {
+            data.remove(at: selectedRow)
+        }
+        table.reloadData()
+        
+        save()
     }
     
     // adds notes
@@ -53,7 +67,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             return
         }
         
-        let name:String = "Item \(data.count + 1)"
+        let name:String = ""
         data.insert(name, at: 0)
         let indexPath:IndexPath = IndexPath(row: 0, section: 0)
         table.insertRows(at: [indexPath], with: .automatic)
